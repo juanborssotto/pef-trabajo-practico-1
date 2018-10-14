@@ -17,15 +17,15 @@ float cinco(dato *f,int cant);
 void  mostrar (dato *d,int cant);
 void borrar(dato *l);
 int cuarto(dato *f,int cant,float &registro);
-// int main(){
-//   dato info,*aux=NULL,*lista;
-//   int cant=0,error=0,i=0;
-//   float num=0.0;
-//   error=lee(&info,cant);
-//   if(error==1){cerr<<"hubo algun problema interno."<<endl;}
+int main(){
+  dato info,*aux=NULL,*lista;
+  int cant=0,error=0,i=0;
+  float num=0.0;
+  error=lee(&info,cant);
+  if(error==1){cerr<<"hubo algun problema interno."<<endl;}
 
-//   return 0;
-// }
+  return 0;
+}
 
 int lee(dato *f,int &cant){
 

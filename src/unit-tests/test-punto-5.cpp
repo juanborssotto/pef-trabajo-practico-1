@@ -9,7 +9,7 @@ struct dato{
  dato *next;
 };
 float cincoOriginal(dato *f, int cant);
-float* cincoCorregida(dato *f);
+float* cincoCorregida(dato *f, int &length);
 void sumarMinutos(int *h, int *m, int minutosSumar);
 bool horaMenor(int h1, int m1, int s1, int h2, int m2, int s2);
 
@@ -55,7 +55,8 @@ int main () {
 
   //No se puede correr con la original ya que no retorna el tipo correcto.
   // float* resultado = cincoOriginal(d1, 5);
-  float* resultado = cincoCorregida(d1);
+  int len = 0;
+  float* resultado = cincoCorregida(d1,len);
   float *resultadoEsperado = new float[tamArray];
   resultadoEsperado[0] = 10.0;
   resultadoEsperado[1] = 0.0;
@@ -90,7 +91,7 @@ float cincoOriginal(dato *f, int cant){
  v=new float[int(tamvector)];
 }
 
-float* cincoCorregida(dato *f){
+float* cincoCorregida(dato *f, int &length){
   float *v = NULL;
   float difh = 0, difm = 0, difs = 0;
   float hinicial=0, hfinal=0, minicial=0, mfinal=0, sinicial=0, sfinal=0;
@@ -113,6 +114,7 @@ float* cincoCorregida(dato *f){
   difs = sfinal - sinicial;
 
   int intervalos = ceil(((difh * 3600 + difm * 60 + difs) / 60) / 5);
+  length = intervalos;
   v = new float[intervalos];
 
   aux = f;
