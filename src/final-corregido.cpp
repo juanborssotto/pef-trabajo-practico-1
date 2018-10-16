@@ -28,7 +28,6 @@ int main()
 
     cout << "ingrese nombre archivo: " << endl;
     cin >> nombre;
-
     lista = lee(nombre, cant, error);
 
     if (error == 1)
@@ -43,13 +42,14 @@ int main()
 
     paquetes = cuarto(lista, total);
 
-    cout << "la canidad de paquetes es: " << paquetes << " son = " << total << " kilobytes " << endl;
-
     vec = cinco(lista, len);    
     for (i = 0; i < len; i++)
     {
-        cout << "vec[" << i << "] = " << vec[i] << endl;
+        cout << "vec[" << i << "] = " << vec[i] << " bytes" << endl;
     }
+    delete vec;
+
+    borrar(lista);
 
     borrar(lista);
 
@@ -142,7 +142,7 @@ void mostrar(dato *d, int cant)
     int i = 0;
     for (i = 0; i < cant; i++)
     {
-        cout << setw(7) << d->hora << setw(7) << d->min << setw(7) << d->seg << setw(7) << d->tam << setw(7) << d->dest << endl;
+        // cout << setw(7) << d->hora << setw(7) << d->min << setw(7) << d->seg << setw(7) << d->tam << setw(7) << d->dest << endl;
         d = d->next;
         if (d == NULL)
             break;
@@ -225,6 +225,8 @@ float *cinco(dato *f, int &length)
                 bytesAcum += aux->tam;
                 contadorNodosProcesados++;
             }
+            else 
+              break;
             aux = aux->next;
         } while (aux != NULL);
         v[i] = bytesAcum / ((i + 1) * 5 * 60);
