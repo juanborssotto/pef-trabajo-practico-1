@@ -51,6 +51,8 @@ int main()
         cout << "vec[" << i << "] = " << vec[i] << endl;
     }
 
+    borrar(lista);
+
     return 0;
 }
 

@@ -1,0 +1,175 @@
+        -:    0:Source:final.cpp
+        -:    0:Graph:final.gcno
+        -:    0:Data:final.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include<iostream>
+        -:    2:#include<fstream>
+        -:    3:#include<iomanip>
+        -:    4:using namespace std;
+        -:    5:struct dato{
+        -:    6: float hora,min,seg,tam,dest,num;
+        -:    7:
+        -:    8: dato *next;
+        -:    9:
+        -:   10:
+        -:   11:};
+        -:   12:int lee(dato *f,int &cant);
+        -:   13:dato* creardato (void);
+        -:   14:dato* agregardato  (dato *l, dato *n);
+        -:   15:float cinco(dato *f,int cant);
+        -:   16:
+        -:   17:void  mostrar (dato *d,int cant);
+        -:   18:void borrar(dato *l);
+        -:   19:int cuarto(dato *f,int cant,float &registro);
+        1:   20:int main(){
+        1:   21:  dato info,*aux=NULL,*lista;
+        1:   22:  int cant=0,error=0,i=0;
+        1:   23:  float num=0.0;
+        1:   24:  error=lee(&info,cant);
+        1:   25:  if(error==1){cerr<<"hubo algun problema interno."<<endl;}
+        -:   26:
+        1:   27:  return 0;
+        -:   28:}
+        -:   29:
+        1:   30:int lee(dato *f,int &cant){
+        -:   31:
+        -:   32:  char nombre[30];
+        1:   33:  dato *aux=NULL,*lista=NULL;
+        1:   34:  int i=0,error=0,c=0;
+        2:   35:  ifstream entrada;
+        1:   36:  float num=0.0,flag=0.0,total=0.0;
+        1:   37:  cout<<"ingrese nombre archivo: "<<endl;
+        1:   38:  cin>>nombre;
+        1:   39:  entrada.open(nombre);
+        -:   40:
+        1:   41:  if(entrada.fail())
+    #####:   42:    { error=1;
+    #####:   43:      cerr<<"no se pudo abrir el archivo"<<endl;}
+        -:   44:      else{ 
+        -:   45:
+        -:   46:
+        8:   47:       while(!entrada.eof()){
+        8:   48:         cant++;
+        8:   49:         aux=creardato();
+        -:   50:
+        -:   51:
+        -:   52:
+        8:   53:         entrada>>aux->hora;
+        -:   54:         
+        8:   55:         entrada>>aux->min;
+        -:   56:
+        8:   57:         entrada>>aux->seg;
+        -:   58:         
+        8:   59:         entrada>>aux->tam;
+        -:   60:
+        8:   61:         entrada>>aux->dest;
+        8:   62:         lista=agregardato(lista,aux);
+        -:   63:
+        -:   64:
+        -:   65:       }
+        1:   66:       mostrar(lista,cant);
+        -:   67:
+        1:   68:       c=cuarto(lista,cant,total);
+        1:   69:       cout<<"la canidad de paquetes es: "<<c<<" son = "<<total<<" kilobytes "<<endl;
+        1:   70:       cinco(lista,cant);
+        1:   71:       entrada.close();
+        1:   72:       cant--;
+        -:   73:
+        -:   74:     }
+        2:   75:     return error;
+        -:   76:   }
+        -:   77:
+        -:   78:
+        8:   79:   dato* creardato (void) {
+        8:   80:    dato *aux=NULL;
+        -:   81:
+        8:   82:    aux = new dato;  
+        8:   83:    if (aux==NULL) { 
+    #####:   84:      cerr << "Memoria insuficiente" << endl;
+        -:   85:    }
+        -:   86:    else { 
+        -:   87:
+        8:   88:      aux->next=NULL;
+        -:   89:    }
+        8:   90:    cout << "creando dato" << endl;
+        8:   91:    return aux;
+        -:   92:  }
+        -:   93:
+        -:   94:
+        8:   95:  dato* agregardato  (dato *l, dato *n) {
+        8:   96:    dato *aux=NULL;
+        -:   97:
+        8:   98:    if (l==NULL) { 
+        1:   99:      l=n;        
+        -:  100:    }
+        -:  101:    else {  
+        7:  102:      aux=l;
+       49:  103:      while(aux->next!=NULL) { 
+       21:  104:        aux=aux->next;
+        -:  105:      }
+        7:  106:      aux->next=n;
+        -:  107:
+        -:  108:    }
+        8:  109:    return l;
+        -:  110:  } 
+        1:  111:  void  mostrar (dato *d,int cant) {
+        1:  112:    int  i=0;
+        8:  113:    for(i=0;i<cant-1;i++){ 
+        7:  114:      cout<<setw(7)<< d->hora <<setw(7)<< d->min<<setw(7)<< d->seg<<setw(7)<< d->tam<<setw(7)<< d->dest<<endl;
+        7:  115:      d=d->next;
+        -:  116:
+        -:  117:    } 
+        1:  118:  }
+    #####:  119:  void borrar(dato *l){
+    #####:  120:   dato *aux=NULL;
+    #####:  121:   while(l!=NULL){
+    #####:  122:     aux=l;
+    #####:  123:     l=l->next;
+    #####:  124:     delete aux;
+        -:  125:   }
+    #####:  126: }
+        1:  127: int  cuarto(dato *f,int cant,float &total) {
+        1:  128:  int c=0,i=0;
+        1:  129:  float tam=0.0,dest=0.0;
+        1:  130:  dest=f->dest;
+        -:  131:
+        -:  132:
+       17:  133:  while(f!=NULL){ 
+        8:  134:   if(f->dest==dest)
+        5:  135:     {c++;
+        5:  136:      tam+=f->tam;
+        -:  137:
+        -:  138:    }
+        8:  139:    total=tam/1000;
+        -:  140:    
+        8:  141:    f=f->next;
+        -:  142:
+        -:  143:  }
+        1:  144:  return c;
+        -:  145:}
+        -:  146:
+        1:  147:float cinco(dato *f,int cant){
+        1:  148:  float *v=NULL,difh=0.0,tamvector=0.0,difm=0.0,difs=0.0,totalsegundos=0.0,hinicial=0.0,hfinal=0.0,minicial=0.0,mfinal=0.0,sinicial=0.0,sfinal=0.0;
+        1:  149:  int i=0;
+        1:  150:  hinicial=f->hora;
+        1:  151:  minicial=f->min;
+        1:  152:  sinicial=f->seg;
+        -:  153:
+        7:  154:  for(i=0;i<cant-2;i++){
+        6:  155:   f=f->next;
+        6:  156:   hfinal=f->hora;
+        6:  157:   mfinal=f->min;
+        6:  158:   sfinal=f->seg;
+        -:  159: }
+        1:  160: difh=hfinal - hinicial;
+        1:  161: difm=mfinal - minicial;
+        1:  162: difs=sfinal - sinicial;
+        1:  163: totalsegundos=difh*36000 + difm*60 + difs;
+        1:  164: cout<<"hora inicial"<<totalsegundos<<"hora final"<<hfinal<<endl;
+        1:  165: tamvector=totalsegundos/5;
+        1:  166: v=new float[int(tamvector)];
+        -:  167:
+        -:  168:
+        -:  169:
+        4:  170:}

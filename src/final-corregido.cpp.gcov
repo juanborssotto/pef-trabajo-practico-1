@@ -1,0 +1,275 @@
+        -:    0:Source:final-corregido.cpp
+        -:    0:Graph:final-corregido.gcno
+        -:    0:Data:final-corregido.gcda
+        -:    0:Runs:2
+        -:    0:Programs:1
+        -:    1:#include <iostream>
+        -:    2:#include <fstream>
+        -:    3:#include <iomanip>
+        -:    4:#include <cmath>
+        -:    5:using namespace std;
+        -:    6:struct dato
+        -:    7:{
+        -:    8:    float hora, min, seg, tam, dest, num;
+        -:    9:
+        -:   10:    dato *next;
+        -:   11:};
+        -:   12:dato *lee(char nombre[30], int &cant, int &error);
+        -:   13:dato *creardato(void);
+        -:   14:dato *agregardato(dato *l, dato *n);
+        -:   15:float *cinco(dato *f, int &length);
+        -:   16:void sumarMinutos(int *h, int *m, int minutosSumar);
+        -:   17:bool horaMenor(int h1, int m1, int s1, int h2, int m2, int s2);
+        -:   18:
+        -:   19:void mostrar(dato *d, int cant);
+        -:   20:void borrar(dato *l);
+        -:   21:int cuarto(dato *f, float &total);
+        2:   22:int main()
+        -:   23:{
+        2:   24:    dato info, *aux = NULL, *lista = NULL;
+        2:   25:    int cant = 0, error = 0, i = 0, paquetes = 0, len = 0;
+        2:   26:    float total = 0.0, *vec;
+        -:   27:    char nombre[30];
+        -:   28:
+        2:   29:    cout << "ingrese nombre archivo: " << endl;
+        2:   30:    cin >> nombre;
+        -:   31:
+        2:   32:    lista = lee(nombre, cant, error);
+        -:   33:
+        2:   34:    if (error == 1)
+        -:   35:    {
+    #####:   36:        cerr << "hubo algun problema interno." << endl;
+        -:   37:    }
+        -:   38:
+        2:   39:    cout << "lista length -> " << cant << endl;
+        -:   40:
+        2:   41:    cout << "*********** CONTENIDO LISTA ***************" << endl;
+        2:   42:    mostrar(lista, cant);
+        -:   43:
+        2:   44:    paquetes = cuarto(lista, total);
+        -:   45:
+        2:   46:    cout << "la canidad de paquetes es: " << paquetes << " son = " << total << " kilobytes " << endl;
+        -:   47:
+        2:   48:    vec = cinco(lista, len);    
+      168:   49:    for (i = 0; i < len; i++)
+        -:   50:    {
+      166:   51:        cout << "vec[" << i << "] = " << vec[i] << endl;
+        -:   52:    }
+        -:   53:
+        2:   54:    borrar(lista);
+        -:   55:
+        2:   56:    return 0;
+        -:   57:}
+        -:   58:
+        2:   59:dato *lee(char nombre[30], int &cant, int &error)
+        -:   60:{
+        -:   61:
+        2:   62:    dato *aux = NULL, *lista = NULL;
+        4:   63:    ifstream entrada;
+        2:   64:    float total = 0.0;
+        -:   65:
+        2:   66:    entrada.open(nombre);
+        -:   67:
+        2:   68:    if (entrada.fail())
+        -:   69:    {
+    #####:   70:        error = 1;
+        -:   71:    }
+        -:   72:    else
+        -:   73:    {
+        -:   74:
+     1008:   75:        while (!entrada.eof())
+        -:   76:        {
+     1008:   77:            cant++;
+     1008:   78:            aux = creardato();
+        -:   79:
+     1008:   80:            entrada >> aux->hora;
+        -:   81:
+     1008:   82:            entrada >> aux->min;
+        -:   83:
+     1008:   84:            entrada >> aux->seg;
+        -:   85:
+     1008:   86:            entrada >> aux->tam;
+        -:   87:
+     1008:   88:            entrada >> aux->dest;
+        -:   89:
+     1008:   90:            lista = agregardato(lista, aux);
+        -:   91:        }
+        2:   92:        entrada.close();
+        -:   93:    }
+        4:   94:    return lista;
+        -:   95:}
+        -:   96:
+     1008:   97:dato *creardato(void)
+        -:   98:{
+     1008:   99:    dato *aux = NULL;
+        -:  100:
+     1008:  101:    aux = new dato;
+     1008:  102:    if (aux == NULL)
+        -:  103:    {
+    #####:  104:        cerr << "Memoria insuficiente" << endl;
+        -:  105:    }
+        -:  106:    else
+        -:  107:    {
+        -:  108:
+     1008:  109:        aux->next = NULL;
+        -:  110:    }
+        -:  111:    // cout << "creando dato" << endl;
+     1008:  112:    return aux;
+        -:  113:}
+        -:  114:
+     1008:  115:dato *agregardato(dato *l, dato *n)
+        -:  116:{
+     1008:  117:    dato *aux = NULL;
+        -:  118:
+     1008:  119:    if (n == NULL)
+        -:  120:    {
+    #####:  121:        return NULL;
+        -:  122:    }
+        -:  123:
+     1008:  124:    if (l == NULL)
+        -:  125:    {
+        2:  126:        l = n;
+        -:  127:    }
+        -:  128:    else
+        -:  129:    {
+     1006:  130:        aux = l;
+   998050:  131:        while (aux->next != NULL)
+        -:  132:        {
+   498522:  133:            aux = aux->next;
+        -:  134:        }
+     1006:  135:        aux->next = n;
+        -:  136:    }
+        -:  137:
+     1008:  138:    return l;
+        -:  139:}
+        2:  140:void mostrar(dato *d, int cant)
+        -:  141:{
+        2:  142:    int i = 0;
+     1008:  143:    for (i = 0; i < cant; i++)
+        -:  144:    {
+     1008:  145:        cout << setw(7) << d->hora << setw(7) << d->min << setw(7) << d->seg << setw(7) << d->tam << setw(7) << d->dest << endl;
+     1008:  146:        d = d->next;
+     1008:  147:        if (d == NULL)
+        2:  148:            break;
+        -:  149:    }
+        2:  150:}
+        2:  151:void borrar(dato *l)
+        -:  152:{
+        2:  153:    dato *aux = NULL;
+     2018:  154:    while (l != NULL)
+        -:  155:    {
+     1008:  156:        aux = l;
+     1008:  157:        l = l->next;
+     1008:  158:        delete aux;
+        -:  159:    }
+        2:  160:}
+        2:  161:int cuarto(dato *f, float &total)
+        -:  162:{
+        2:  163:    int c = 0, i = 0;
+        2:  164:    float tam = 0.0, dest = 0.0;
+        2:  165:    dest = f->dest;
+        -:  166:
+     2018:  167:    while (f != NULL)
+        -:  168:    {
+     1008:  169:        if (f->dest == dest)
+        -:  170:        {
+       57:  171:            c++;
+        -:  172:        }
+     1008:  173:        tam += f->tam;
+     1008:  174:        total = tam / 1000;
+        -:  175:
+     1008:  176:        f = f->next;
+        -:  177:    }
+        2:  178:    return c;
+        -:  179:}
+        -:  180:
+        2:  181:float *cinco(dato *f, int &length)
+        -:  182:{    
+        2:  183:    float *v = NULL;
+        2:  184:    float difh = 0, difm = 0, difs = 0;
+        2:  185:    float hinicial = 0, hfinal = 0, minicial = 0, mfinal = 0, sinicial = 0, sfinal = 0;
+        -:  186:    dato *aux;    
+        2:  187:    hinicial = f->hora;
+        2:  188:    minicial = f->min;
+        2:  189:    sinicial = f->seg;
+        -:  190:
+        2:  191:    aux = f;
+     1004:  192:    do
+        -:  193:    {
+     1006:  194:        aux = aux->next;
+     1006:  195:        hfinal = aux->hora;
+     1006:  196:        mfinal = aux->min;
+     1006:  197:        sfinal = aux->seg;
+     1006:  198:    } while (aux->next != NULL);
+        -:  199:    
+        -:  200:
+        2:  201:    difh = hfinal - hinicial;
+        2:  202:    difm = mfinal - minicial;
+        2:  203:    difs = sfinal - sinicial;
+        -:  204:
+        2:  205:    int intervalos = ceil(((difh * 3600 + difm * 60 + difs) / 60) / 5);         
+        2:  206:    length = intervalos;
+        2:  207:    v = new float[intervalos];    
+        -:  208:
+        2:  209:    aux = f;
+        2:  210:    int hPeriodo = aux->hora, mPeriodo = aux->min, sPeriodo = aux->seg;
+        -:  211:    float bytesAcum;
+        2:  212:    int contadorNodosProcesados = 0;
+        -:  213:    int i, j;
+      168:  214:    for (i = 0; i < intervalos; i++)
+        -:  215:    {
+      166:  216:        aux = f;
+    81387:  217:        for (j = 0; j < contadorNodosProcesados; j++)
+    81221:  218:            aux = aux->next;
+      166:  219:        bytesAcum = 0.0;
+      166:  220:        sumarMinutos(&hPeriodo, &mPeriodo, 5);
+    82629:  221:        do
+        -:  222:        {
+    82795:  223:            if (horaMenor(aux->hora, aux->min, aux->seg, hPeriodo, mPeriodo, sPeriodo))
+        -:  224:            {
+     1008:  225:                bytesAcum += aux->tam;
+     1008:  226:                contadorNodosProcesados++;
+        -:  227:            }
+    82795:  228:            aux = aux->next;
+    82795:  229:        } while (aux != NULL);
+      166:  230:        v[i] = bytesAcum / ((i + 1) * 5 * 60);
+        -:  231:    }
+        2:  232:    return v;
+        -:  233:}
+        -:  234:
+      166:  235:void sumarMinutos(int *h, int *m, int minutosSumar)
+        -:  236:{
+      166:  237:    *m += 5;
+      166:  238:    if (*m >= 60)
+        -:  239:    {
+       14:  240:        *h = *h + 1;
+       14:  241:        *m = *m - 60;
+       14:  242:        if (*h == 23)
+        -:  243:        {
+    #####:  244:            *h = 0;
+        -:  245:        }
+        -:  246:    }
+      166:  247:}
+        -:  248:
+    82795:  249:bool horaMenor(int h1, int m1, int s1, int h2, int m2, int s2)
+        -:  250:{
+    82795:  251:    if (h1 < h2)
+        -:  252:    {
+       72:  253:        return true;
+        -:  254:    }
+    82723:  255:    else if (h1 == h2)
+        -:  256:    {
+     7123:  257:        if (m1 < m2)
+        -:  258:        {
+      848:  259:            return true;
+        -:  260:        }
+     6275:  261:        else if (m1 == m2)
+        -:  262:        {
+      201:  263:            if (s1 < s2)
+        -:  264:            {
+       88:  265:                return true;
+        -:  266:            }
+        -:  267:        }
+        -:  268:    }
+    81787:  269:    return false;
+        6:  270:}
