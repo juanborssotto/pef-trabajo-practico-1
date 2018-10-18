@@ -51,8 +51,6 @@ int main()
 
     borrar(lista);
 
-    borrar(lista);
-
     return 0;
 }
 
@@ -142,7 +140,7 @@ void mostrar(dato *d, int cant)
     int i = 0;
     for (i = 0; i < cant; i++)
     {
-        // cout << setw(7) << d->hora << setw(7) << d->min << setw(7) << d->seg << setw(7) << d->tam << setw(7) << d->dest << endl;
+        cout << setw(7) << d->hora << setw(7) << d->min << setw(7) << d->seg << setw(7) << d->tam << setw(7) << d->dest << endl;
         d = d->next;
         if (d == NULL)
             break;
